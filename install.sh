@@ -14,7 +14,7 @@
 
 yes | sudo apt-get update 1> /dev/null && echo 'APTのキャッシュの更新が完了しました'
 
-if !(type git); then
+if ! type git; then
     sudo apt-get install -y git 1> /dev/null && echo 'gitのインストールが完了'
 fi
 

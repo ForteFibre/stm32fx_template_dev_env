@@ -23,6 +23,17 @@ git clone https://github.com/andysworkshop/stm32plus.git
 cd stm32plus
 git apply ../stm32plus_nostlthrow_git.patch
 
+if [ -e '/usr/local/arm-cs-tools/bin' ]; then
+  PATH="/usr/local/arm-cs-tools/bin:$PATH"
+  export PATH
+else
+  if ! which arm-none-eabi-gcc; then
+    echo -e '\e[1m\e[31m致命的なエラー:\e[0m \e[31mgcc-arm-none-eabi が見つかりませんでした\e[0m'
+    echo -e '処理を中断しています...'
+    exit 1
+  fi
+fi
+
 scons mode=small mcu=f1md hse=12000000 -j4 examples=no 1> /dev/null && echo 'OK'
 scons mode=small mcu=f1hd hse=12000000 -j4 examples=no 1> /dev/null && echo 'OK'
 scons mode=small mcu=f1md hse=8000000 -j4 examples=no  1> /dev/null && echo 'OK'

@@ -1,4 +1,6 @@
 # stm32fx_template_dev_env
+[![Build Status](https://travis-ci.org/nishi-yuki/stm32fx_template_dev_env.svg?branch=master)](https://travis-ci.org/nishi-yuki/stm32fx_template_dev_env)
+
 stm32fx_template の開発環境構築スクリプト
 
 ## 使用法

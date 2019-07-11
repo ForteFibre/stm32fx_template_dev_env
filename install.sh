@@ -7,7 +7,7 @@
 # 説明:
 #   このスクリプトは, wget, curl などを使用して実行されることを目的としています
 #   次のコマンドで実行できます
-#      TODO: 書く
+#    $ wget -qO - https://raw.githubusercontent.com/nishi-yuki/stm32fx_template_dev_env/master/install.sh | bash
 #   stm32fx_template_dev_env リポジトリをクローンし, 次のスクリプトを実行します
 #     - install_env.sh
 #     - install_stm32plus.sh
@@ -34,4 +34,3 @@ bash install_stm32plus.sh
 echo "-----------------"
 echo "Install finished!"
 echo "-----------------"
-#!/bin/bash

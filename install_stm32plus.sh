@@ -45,7 +45,7 @@ scons mode=small mcu=f4 hse=12000000 -j4 float=hard examples=no 1> /dev/null  &&
 
 scons mode=small mcu=f429 hse=8000000 -j4 float=hard examples=no 1> /dev/null  &&  echo 'OK'
 
-echo 'stm32plseのビルドが完了しました'
+echo 'stm32plusのビルドが完了しました'
 
 if [ -e ~/workspace/stm32plus ]; then
   echo "Delete old stm32plus files"

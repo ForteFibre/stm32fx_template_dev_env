@@ -1,6 +1,9 @@
 os: linux
 language: bash
 
+git:
+  clone: false
+
 install:
   - wget -qO - https://raw.githubusercontent.com/nishi-yuki/stm32fx_template_dev_env/master/install.sh | bash
   - git clone https://github.com/nishi-yuki/stm32f4_template.git ~/workspace/test

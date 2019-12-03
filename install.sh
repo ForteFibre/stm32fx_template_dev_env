@@ -7,7 +7,7 @@
 # 説明:
 #   このスクリプトは, wget, curl などを使用して実行されることを目的としています
 #   次のコマンドで実行できます
-#    $ wget -qO - https://raw.githubusercontent.com/Ni5h1/stm32fx_template_dev_env/master/install.sh | bash
+#    $ wget -qO - https://raw.githubusercontent.com/ForteFibre/stm32fx_template_dev_env/master/install.sh | bash
 #   stm32fx_template_dev_env リポジトリをクローンし, 次のスクリプトを実行します
 #     - install_env.sh
 #     - install_stm32plus.sh
@@ -23,7 +23,7 @@ if [ -e /tmp/stm32fx_template_dev_env ]; then
     echo '古いstm32fx_template_dev_envディレクトリを削除しています'
     rm -rf /tmp/stm32fx_template_dev_env
 fi
-git clone https://github.com/Ni5h1/stm32fx_template_dev_env.git stm32fx_template_dev_env
+git clone https://github.com/ForteFibre/stm32fx_template_dev_env.git stm32fx_template_dev_env
 cd /tmp/stm32fx_template_dev_env
 # pwd
 # git status

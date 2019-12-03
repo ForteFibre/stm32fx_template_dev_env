@@ -6,6 +6,6 @@ git:
 
 install:
   - wget -qO - https://raw.githubusercontent.com/ForteFibre/stm32fx_template_dev_env/master/install.sh | bash
-  - git clone https://github.com/Ni5h1/stm32f4_template.git ~/workspace/test
+  - git clone https://github.com/spiralray/stm32f4_template.git ~/workspace/test
 script:
   - cd ~/workspace/test && make all

@@ -55,7 +55,7 @@ fi
 git clone 'https://github.com/texane/stlink.git' stlink && echo 'stlinkのソースの取得が完了しました'
 cd /tmp/stlink
 git fetch --tags
-git checkout 1.2.0
+git checkout v1.2.0
 
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Debug .. 2> /dev/null

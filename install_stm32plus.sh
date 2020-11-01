@@ -10,7 +10,8 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 sudo apt-get -y install scons 1> /dev/null  &&  echo 'sconsのインストールが完了しました'
 
 cp "$SCRIPT_DIR"/stm32plus_nostlthrow_git.patch /tmp
-cd /tmp 
+cp "$SCRIPT_DIR"/stm32plus_compiler_option.patch /tmp
+cd /tmp
 
 if [ -e stm32plus ]; then
   echo "Delete old stm32plus files"
@@ -22,6 +23,7 @@ git clone https://github.com/andysworkshop/stm32plus.git
 #patch -b stm32plus/lib/include/stl/string < stm32plus_nostlthrow.patch
 cd stm32plus
 git apply ../stm32plus_nostlthrow_git.patch
+git apply ../stm32plus_compiler_option.patch
 
 if [ -e '/usr/local/arm-cs-tools/bin' ]; then
   PATH="/usr/local/arm-cs-tools/bin:$PATH"

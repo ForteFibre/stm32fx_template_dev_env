@@ -10,7 +10,6 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 sudo apt-get -y install scons 1> /dev/null  &&  echo 'sconsのインストールが完了しました'
 
 cp "$SCRIPT_DIR"/stm32plus_use_standard_stl.patch /tmp
-cp "$SCRIPT_DIR"/stm32plus_nostlthrow_git.patch /tmp
 cp "$SCRIPT_DIR"/stm32plus_compiler_option.patch /tmp
 cd /tmp
 
@@ -22,8 +21,8 @@ fi
 #git clone https://github.com/spiralray/stm32plus.git -b can-support
 git clone https://github.com/andysworkshop/stm32plus.git
 cd stm32plus
+rm ./lib/include/stl -rf
 git apply ../stm32plus_use_standard_stl.patch
-git apply ../stm32plus_nostlthrow_git.patch
 git apply ../stm32plus_compiler_option.patch
 
 if ! which arm-none-eabi-gcc; then
@@ -32,16 +31,18 @@ if ! which arm-none-eabi-gcc; then
   exit 1
 fi
 
-scons mode=small mcu=f1md hse=12000000 -j4 examples=no 1> /dev/null && echo 'OK'
-scons mode=small mcu=f1hd hse=12000000 -j4 examples=no 1> /dev/null && echo 'OK'
-scons mode=small mcu=f1md hse=8000000 -j4 examples=no  1> /dev/null && echo 'OK'
-scons mode=small mcu=f1hd hse=8000000 -j4 examples=no  1> /dev/null && echo 'OK'
+echo 'stm32plusのビルドを開始します'
 
-scons mode=small mcu=f4 hse=25000000 -j4 float=hard examples=no 1> /dev/null  &&  echo 'OK'
-scons mode=small mcu=f4 hse=8000000 -j4 float=hard examples=no  1> /dev/null  &&  echo 'OK'
-scons mode=small mcu=f4 hse=12000000 -j4 float=hard examples=no 1> /dev/null  &&  echo 'OK'
+scons mode=small mcu=f1md hse=12000000 -j4 examples=no 1> /dev/null && echo '1/8 OK'
+scons mode=small mcu=f1hd hse=12000000 -j4 examples=no 1> /dev/null && echo '2/8 OK'
+scons mode=small mcu=f1md hse=8000000 -j4 examples=no 1> /dev/null && echo '3/8 OK'
+scons mode=small mcu=f1hd hse=8000000 -j4 examples=no 1> /dev/null && echo '4/8 OK'
 
-scons mode=small mcu=f429 hse=8000000 -j4 float=hard examples=no 1> /dev/null  &&  echo 'OK'
+scons mode=small mcu=f4 hse=25000000 -j4 float=hard examples=no 1> /dev/null && echo '5/8 OK'
+scons mode=small mcu=f4 hse=8000000 -j4 float=hard examples=no 1> /dev/null && echo '6/8 OK'
+scons mode=small mcu=f4 hse=12000000 -j4 float=hard examples=no 1> /dev/null && echo '7/8 OK'
+
+scons mode=small mcu=f429 hse=8000000 -j4 float=hard examples=no 1> /dev/null && echo '8/8 OK'
 
 echo 'stm32plusのビルドが完了しました'
 

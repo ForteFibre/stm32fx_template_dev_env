@@ -27,7 +27,7 @@ mkdir -p ~/.local/bin
 mkdir -p ~/.local/lib
 wget 'https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2' \
         && echo -e '\barmコンパイラのアーカイブのダウンロードが完了しました'
-sudo tar xvf 'gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2' -C ~/.local/lib 1> /dev/null \
+tar xvf 'gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2' -C ~/.local/lib 1> /dev/null \
         && echo 'アーカイブの展開が完了しました'
 ls ~/.local/lib/gcc-arm-none-eabi-9-2020-q2-update/bin | xargs -I{} ln -s ../lib/gcc-arm-none-eabi-9-2020-q2-update/bin/{} ~/.local/bin/ \
         && echo 'armコンパイラへのシンボリックリンクを作成しました'

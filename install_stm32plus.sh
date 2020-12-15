@@ -3,6 +3,8 @@
 # stm32plusのインストール
 #=========================
 
+source ~/.profile
+
 # このスクリプトはcloneしてから実行すること
 set -eu
 SCRIPT_DIR=$(cd $(dirname $0); pwd)

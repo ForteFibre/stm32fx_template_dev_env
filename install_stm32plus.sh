@@ -9,7 +9,7 @@ source ~/.profile
 set -eu
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
-sudo apt-get -y install scons 1> /dev/null  &&  echo 'sconsのインストールが完了しました'
+sudo -E apt -y install scons 1> /dev/null  &&  echo 'sconsのインストールが完了しました'
 
 cp "$SCRIPT_DIR"/stm32plus_use_standard_stl.patch /tmp
 cp "$SCRIPT_DIR"/stm32plus_compiler_option.patch /tmp

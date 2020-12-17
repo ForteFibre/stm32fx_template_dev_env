@@ -11,12 +11,12 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 sudo cp "$SCRIPT_DIR"/50-udev.rules /etc/udev/rules.d/ && echo 'udevルールファイルの設置が完了しました'
 
 #Update cache
-yes | sudo apt-get update 1> /dev/null && echo 'APTのキャッシュの更新が完了しました'
+yes | sudo -E apt update 1> /dev/null && echo 'APTのキャッシュの更新が完了しました'
 
 # Install cmake
-sudo apt-get -y install cmake 1> /dev/null  &&  echo 'cmakeのインストール完了しました'
+sudo -E apt -y install cmake 1> /dev/null  &&  echo 'cmakeのインストール完了しました'
 # Install git
-sudo apt-get -y install git 1> /dev/null  &&  echo 'gitのインストール完了しました'
+sudo -E apt -y install git 1> /dev/null  &&  echo 'gitのインストール完了しました'
 
 #--------------------------
 # コンパイラのインストール
@@ -36,4 +36,4 @@ ls ~/.local/lib/gcc-arm-none-eabi-9-2020-q2-update/bin | xargs -I{} ln -s ../lib
 # stlinkのインストール
 #----------------------
 
-sudo apt-get -y install stlink-tools 1> /dev/null && echo 'stlink-toolsのインストールが完了しました'
+sudo -E apt -y install stlink-tools 1> /dev/null && echo 'stlink-toolsのインストールが完了しました'

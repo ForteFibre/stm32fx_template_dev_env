@@ -18,7 +18,7 @@ if [ -e /tmp/stm32fx_template_dev_env ]; then
 fi
 
 echo "インストーラーをダウンロードしています"
-git clone https://github.com/ForteFibre/stm32fx_template_dev_env.git stm32fx_template_dev_env
+git clone https://github.com/ForteFibre/stm32fx_template_dev_env.git stm32fx_template_dev_env -q
 cd /tmp/stm32fx_template_dev_env
 
 echo -e "\e[1;96m環境構築開始\e[m\n"

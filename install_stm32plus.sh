@@ -14,7 +14,7 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
 echo -e "\e[1;32m> SCons\e[m"
 echo -e "\e[90m[1/1]\e[m インストール中..."
-sudo -E apt-get -y install scons 1> /dev/null
+sudo -E apt-get -y install scons -qq
 echo
 
 cp "$SCRIPT_DIR"/stm32plus_use_standard_stl.patch /tmp
@@ -36,16 +36,16 @@ git apply ../stm32plus_use_standard_stl.patch
 git apply ../stm32plus_compiler_option.patch
 
 echo -ne "\e[90m[3/4]\e[m ビルド中... 1/8"
-scons mode=small mcu=f1md hse=12000000 -j4 examples=no 1> /dev/null && echo -ne "\e[3D2/8"
-scons mode=small mcu=f1hd hse=12000000 -j4 examples=no 1> /dev/null && echo -ne "\e[3D3/8"
-scons mode=small mcu=f1md hse=8000000 -j4 examples=no 1> /dev/null && echo -ne "\e[3D4/8"
-scons mode=small mcu=f1hd hse=8000000 -j4 examples=no 1> /dev/null && echo -ne "\e[3D5/8"
+scons mode=small mcu=f1md hse=12000000 -j4 examples=no -Q && echo -ne "\e[3D2/8"
+scons mode=small mcu=f1hd hse=12000000 -j4 examples=no -Q && echo -ne "\e[3D3/8"
+scons mode=small mcu=f1md hse=8000000 -j4 examples=no -Q && echo -ne "\e[3D4/8"
+scons mode=small mcu=f1hd hse=8000000 -j4 examples=no -Q && echo -ne "\e[3D5/8"
 
-scons mode=small mcu=f4 hse=25000000 -j4 float=hard examples=no 1> /dev/null && echo -ne "\e[3D6/8"
-scons mode=small mcu=f4 hse=8000000 -j4 float=hard examples=no 1> /dev/null && echo -ne "\e[3D7/8"
-scons mode=small mcu=f4 hse=12000000 -j4 float=hard examples=no 1> /dev/null && echo -ne "\e[3D8/8"
+scons mode=small mcu=f4 hse=25000000 -j4 float=hard examples=no -Q && echo -ne "\e[3D6/8"
+scons mode=small mcu=f4 hse=8000000 -j4 float=hard examples=no -Q && echo -ne "\e[3D7/8"
+scons mode=small mcu=f4 hse=12000000 -j4 float=hard examples=no -Q && echo -ne "\e[3D8/8"
 
-scons mode=small mcu=f429 hse=8000000 -j4 float=hard examples=no 1> /dev/null && echo -e "\e[3D   "
+scons mode=small mcu=f429 hse=8000000 -j4 float=hard examples=no -Q && echo -e "\e[3D   "
 
 if [ -e ~/workspace/stm32plus ]; then
   rm -rf ~/workspace/stm32plus

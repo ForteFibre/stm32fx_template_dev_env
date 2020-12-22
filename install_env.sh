@@ -18,22 +18,22 @@ echo
 
 echo -e "\e[1;32m> APT\e[m"
 echo -e "\e[90m[1/1]\e[m パッケージリスト更新中..."
-sudo -E apt-get update 1> /dev/null
+sudo -E apt-get update -qq
 echo
 
 echo -e "\e[1;32m> CMake\e[m"
 echo -e "\e[90m[1/1]\e[m インストール中..."
-sudo -E apt-get -y install cmake 1> /dev/null
+sudo -E apt-get -y install cmake -qq
 echo
 
 echo -e "\e[1;32m> GNU Make\e[m"
 echo -e "\e[90m[1/1]\e[m インストール中..."
-sudo -E apt-get -y install cmake 1> /dev/null
+sudo -E apt-get -y install cmake -qq
 echo
 
 echo -e "\e[1;32m> Git\e[m"
 echo -e "\e[90m[1/1]\e[m インストール中..."
-sudo -E apt-get -y install git 1> /dev/null
+sudo -E apt-get -y install git -qq
 echo
 
 cd /tmp
@@ -42,7 +42,7 @@ echo -e "\e[1;32m> stlink\e[m"
 echo -e "\e[90m[1/2]\e[m debパッケージ取得中..."
 wget "https://github.com/stlink-org/stlink/releases/download/v1.6.1/stlink-1.6.1-1_amd64.deb" -O "stlink-1.6.1-1_amd64.deb" -q --show-progress
 echo -e "\e[90m[2/2]\e[m インストール中..."
-sudo -E apt-get -y install ./stlink-1.6.1-1_amd64.deb 1> /dev/null
+sudo -E apt-get -y install ./stlink-1.6.1-1_amd64.deb -qq
 echo
 
 echo -e "\e[1;32m> GNU Arm Embedded Toolchain\e[m"
@@ -54,7 +54,7 @@ echo -e "\e[90m[2/3]\e[m アーカイブ展開中..."
 if [ -e ~/.local/lib/gcc-arm-none-eabi-9-2020-q2-update ]; then
     rm ~/.local/lib/gcc-arm-none-eabi-9-2020-q2-update -rf
 fi
-tar -xvf "gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2" -C ~/.local/lib 1> /dev/null
+tar -xf "gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2" -C ~/.local/lib
 echo -e "\e[90m[3/3]\e[m シンボリックリンク作成中..."
 ls ~/.local/lib/gcc-arm-none-eabi-9-2020-q2-update/bin | xargs -I{} ln -fs ../lib/gcc-arm-none-eabi-9-2020-q2-update/bin/{} ~/.local/bin/
 echo

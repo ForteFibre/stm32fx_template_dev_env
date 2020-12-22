@@ -14,17 +14,19 @@
 
 cd /tmp
 if [ -e /tmp/stm32fx_template_dev_env ]; then
-    echo '古いstm32fx_template_dev_envディレクトリを削除しています'
     rm -rf /tmp/stm32fx_template_dev_env
 fi
+
+echo "インストーラーをダウンロードしています"
 git clone https://github.com/ForteFibre/stm32fx_template_dev_env.git stm32fx_template_dev_env
 cd /tmp/stm32fx_template_dev_env
+
+echo -e "\e[1;96m環境構築開始\e[m\n"
+
 # pwd
 # git status
 bash install_env.sh
 bash install_stm32plus.sh
 
 # End
-echo "-----------------"
-echo "Install finished!"
-echo "-----------------"
+echo -e "\e[1;95m環境構築完了！\e[m"

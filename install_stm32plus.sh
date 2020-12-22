@@ -1,62 +1,61 @@
 #!/bin/bash
-#=========================
-# stm32plusのインストール
-#=========================
 
-source ~/.profile
-
-# このスクリプトはcloneしてから実行すること
 set -eu
+
+# 表示のついでにsudoのパスワードを予め入力しておいてもらう
+sudo echo -e "\n\e[1;96mstm32fx_template ライブラリインストーラー\e[m\n"
+
+if ! which arm-none-eabi-gcc 1> /dev/null; then
+  echo "stm32plusをインストールするにはarm-none-eabi-gccが必要です"
+  exit 1
+fi
+
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
-sudo -E apt -y install scons 1> /dev/null  &&  echo 'sconsのインストールが完了しました'
+echo -e "\e[1;32m> SCons\e[m"
+echo -e "\e[90m[1/1]\e[m インストール中..."
+sudo -E apt-get -y install scons 1> /dev/null
+echo
 
 cp "$SCRIPT_DIR"/stm32plus_use_standard_stl.patch /tmp
 cp "$SCRIPT_DIR"/stm32plus_compiler_option.patch /tmp
 cd /tmp
 
 if [ -e stm32plus ]; then
-  echo "Delete old stm32plus files"
   rm -rf stm32plus
 fi
 
-#git clone https://github.com/spiralray/stm32plus.git -b can-support
-git clone https://github.com/andysworkshop/stm32plus.git
+echo -e "\e[1;32m> stm32plus\e[m"
+echo -e "\e[90m[1/4]\e[m リポジトリクローン中..."
+git clone https://github.com/andysworkshop/stm32plus.git -q
+
+echo -e "\e[90m[2/4]\e[m パッチ適用中..."
 cd stm32plus
 rm ./lib/include/stl -rf
 git apply ../stm32plus_use_standard_stl.patch
 git apply ../stm32plus_compiler_option.patch
 
-if ! which arm-none-eabi-gcc; then
-  echo -e '\e[1m\e[31m致命的なエラー:\e[0m \e[31mgcc-arm-none-eabi が見つかりませんでした\e[0m'
-  echo -e '処理を中断しています...'
-  exit 1
-fi
+echo -ne "\e[90m[3/4]\e[m ビルド中... 1/8"
+scons mode=small mcu=f1md hse=12000000 -j4 examples=no 1> /dev/null && echo -ne "\e[3D2/8"
+scons mode=small mcu=f1hd hse=12000000 -j4 examples=no 1> /dev/null && echo -ne "\e[3D3/8"
+scons mode=small mcu=f1md hse=8000000 -j4 examples=no 1> /dev/null && echo -ne "\e[3D4/8"
+scons mode=small mcu=f1hd hse=8000000 -j4 examples=no 1> /dev/null && echo -ne "\e[3D5/8"
 
-echo 'stm32plusのビルドを開始します'
+scons mode=small mcu=f4 hse=25000000 -j4 float=hard examples=no 1> /dev/null && echo -ne "\e[3D6/8"
+scons mode=small mcu=f4 hse=8000000 -j4 float=hard examples=no 1> /dev/null && echo -ne "\e[3D7/8"
+scons mode=small mcu=f4 hse=12000000 -j4 float=hard examples=no 1> /dev/null && echo -ne "\e[3D8/8"
 
-scons mode=small mcu=f1md hse=12000000 -j4 examples=no 1> /dev/null && echo '1/8 OK'
-scons mode=small mcu=f1hd hse=12000000 -j4 examples=no 1> /dev/null && echo '2/8 OK'
-scons mode=small mcu=f1md hse=8000000 -j4 examples=no 1> /dev/null && echo '3/8 OK'
-scons mode=small mcu=f1hd hse=8000000 -j4 examples=no 1> /dev/null && echo '4/8 OK'
-
-scons mode=small mcu=f4 hse=25000000 -j4 float=hard examples=no 1> /dev/null && echo '5/8 OK'
-scons mode=small mcu=f4 hse=8000000 -j4 float=hard examples=no 1> /dev/null && echo '6/8 OK'
-scons mode=small mcu=f4 hse=12000000 -j4 float=hard examples=no 1> /dev/null && echo '7/8 OK'
-
-scons mode=small mcu=f429 hse=8000000 -j4 float=hard examples=no 1> /dev/null && echo '8/8 OK'
-
-echo 'stm32plusのビルドが完了しました'
+scons mode=small mcu=f429 hse=8000000 -j4 float=hard examples=no 1> /dev/null && echo -e "\e[3D   "
 
 if [ -e ~/workspace/stm32plus ]; then
-  echo "Delete old stm32plus files"
   rm -rf ~/workspace/stm32plus
 fi
 
+echo -e "\e[90m[4/4]\e[m ビルド成果物コピー中..."
 mkdir -p ~/workspace
 mv ./lib ~/workspace/stm32plus
 
-cd  ~/workspace/stm32plus/build
+cd ~/workspace/stm32plus/build
 
 #To be compatible with old stm32plus
 
@@ -70,21 +69,18 @@ cp -r small-f429-8000000e-hard small-f429-8000000-hard
 
 cd small-f1hd-8000000
 cp libstm32plus-small-f1hd-8000000e.a libstm32plus-small-f1hd-8000000.a
-
 cd ../small-f1hd-12000000
 cp libstm32plus-small-f1hd-12000000e.a libstm32plus-small-f1hd-12000000.a
-
 cd ../small-f1md-8000000
 cp libstm32plus-small-f1md-8000000e.a libstm32plus-small-f1md-8000000.a
-
 cd ../small-f1md-12000000
 cp libstm32plus-small-f1md-12000000e.a libstm32plus-small-f1md-12000000.a
-
 cd ../small-f4-8000000-hard
 cp libstm32plus-small-f4-8000000e-hard.a libstm32plus-small-f4-8000000-hard.a
-
 cd ../small-f4-25000000-hard
 cp libstm32plus-small-f4-25000000e-hard.a libstm32plus-small-f4-25000000-hard.a
-
 cd ../small-f429-8000000-hard
 cp libstm32plus-small-f429-8000000e-hard.a libstm32plus-small-f429-8000000-hard.a
+echo
+
+echo -e "\e[1;96mインストール完了！\e[m\n"

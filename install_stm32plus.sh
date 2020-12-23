@@ -31,7 +31,6 @@ git clone https://github.com/andysworkshop/stm32plus.git -q
 
 echo -e "\e[90m[2/4]\e[m パッチ適用中..."
 cd stm32plus
-rm ./lib/include/stl -rf
 git apply ../stm32plus_use_standard_stl.patch
 git apply ../stm32plus_compiler_option.patch
 

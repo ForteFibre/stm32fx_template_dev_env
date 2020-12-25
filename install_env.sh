@@ -5,63 +5,58 @@
 
 # このスクリプトはcloneしてから実行すること
 set -eu
+
+# 表示のついでにsudoのパスワードを予め入力しておいてもらう
+sudo echo -e "\n\e[1;96mstm32fx_template ツールチェインインストーラー\e[m\n"
+
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
-#Add udev-rules file
-sudo cp "$SCRIPT_DIR"/50-udev.rules /etc/udev/rules.d/ && echo 'udevルールファイルの設置が完了しました'
+echo -e "\e[1;32m> udev\e[m"
+echo -e "\e[90m[1/1]\e[m ルールファイル設置中..."
+sudo cp "$SCRIPT_DIR"/50-udev.rules /etc/udev/rules.d/
+echo
 
-#Update cache
-yes | sudo apt-get update 1> /dev/null && echo 'APTのキャッシュの更新が完了しました'
+echo -e "\e[1;32m> APT\e[m"
+echo -e "\e[90m[1/1]\e[m パッケージリスト更新中..."
+sudo -E apt-get update -qq
+echo
 
-#GNU Tools for ARM Embedded Processors is 32bit application.
-sudo apt-get -y install lib32z1 1> /dev/null && echo 'lib32z1パッケージのインストール完了しました'
-# Install cmake
-sudo apt-get -y install cmake 1> /dev/null  &&  echo 'cmakeのインストール完了しました'
-# Install git
-sudo apt-get -y install git 1> /dev/null  &&  echo 'gitのインストール完了しました'
+echo -e "\e[1;32m> CMake\e[m"
+echo -e "\e[90m[1/1]\e[m インストール中..."
+sudo -E apt-get -y install cmake -qq
+echo
 
-#--------------------------
-# コンパイラのインストール
-# -------------------------
+echo -e "\e[1;32m> GNU Make\e[m"
+echo -e "\e[90m[1/1]\e[m インストール中..."
+sudo -E apt-get -y install cmake -qq
+echo
 
-# aptでインストールしたコンパイラを使用するとコンパイルエラーがでた．
-# TODO: 原因を解明
-#sudo apt-get -y install gcc-arm-none-eabi 1> /dev/null  &&  echo 'armコンパイラのインストール完了しました'
+echo -e "\e[1;32m> Git\e[m"
+echo -e "\e[90m[1/1]\e[m インストール中..."
+sudo -E apt-get -y install git -qq
+echo
 
-# armコンパイラをダウンロードして配置
 cd /tmp
-wget 'https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2018q2/gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2'\
-        -nc \
-        && echo -e '\barmコンパイラのアーカイブのダウンロードが完了しました'
-sudo tar xvf 'gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2' -C '/usr/local' 1> /dev/null \
-        && echo 'アーカイブの展開が完了しました'
-sudo ln -snf '/usr/local/gcc-arm-none-eabi-7-2018-q2-update' '/usr/local/arm-cs-tools' \
-        && echo 'armコンパイラへのシンボリックリンクを作成しました'
 
-sudo apt-get -y install dh-autoreconf     1> /dev/null  &&  echo 'dh_autoreconfパッケージのインストール完了しました'
-sudo apt-get -y install libusb-1.0-0-dev  1> /dev/null  &&  echo 'libusb-1.0-0-devパッケージのインストール完了しました'
+echo -e "\e[1;32m> stlink\e[m"
+echo -e "\e[90m[1/2]\e[m debパッケージ取得中..."
+wget "https://github.com/stlink-org/stlink/releases/download/v1.6.1/stlink-1.6.1-1_amd64.deb" -O "stlink-1.6.1-1_amd64.deb" -q --show-progress
+echo -e "\e[90m[2/2]\e[m インストール中..."
+sudo -E apt-get -y install ./stlink-1.6.1-1_amd64.deb -qq
+echo
 
-
-#----------------------
-# stlinkのインストール
-#----------------------
-
-# Download stlink
-cd /tmp
-if [ -e stlink ]; then
-    echo '古いstlinkファイルを削除しました'
-    rm -rf stlink
+echo -e "\e[1;32m> GNU Arm Embedded Toolchain\e[m"
+mkdir -p ~/.local/bin
+mkdir -p ~/.local/lib
+echo -e "\e[90m[1/3]\e[m アーカイブ取得中..."
+wget "https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2" -O "gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2" -q --show-progress
+echo -e "\e[90m[2/3]\e[m アーカイブ展開中..."
+if [ -e ~/.local/lib/gcc-arm-none-eabi-9-2020-q2-update ]; then
+    rm ~/.local/lib/gcc-arm-none-eabi-9-2020-q2-update -rf
 fi
-git clone 'https://github.com/texane/stlink.git' stlink && echo 'stlinkのソースの取得が完了しました'
-cd /tmp/stlink
-git fetch --tags
-git checkout v1.2.0
+tar -xf "gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2" -C ~/.local/lib
+echo -e "\e[90m[3/3]\e[m シンボリックリンク作成中..."
+ls ~/.local/lib/gcc-arm-none-eabi-9-2020-q2-update/bin | xargs -I{} ln -fs ../lib/gcc-arm-none-eabi-9-2020-q2-update/bin/{} ~/.local/bin/
+echo
 
-mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Debug .. 2> /dev/null
-make 2> /dev/null
-
-sudo make install && echo 'stlinkのインストールが完了しました'
-
-#Setup dfu-util
-sudo apt-get -y install dfu-util 1> /dev/null  &&  echo 'dfu-utilパッケージのインストールが完了しました'
+echo -e "\e[1;96mインストール完了！\e[m\n"

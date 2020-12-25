@@ -5,6 +5,8 @@ set -eu
 # 表示のついでにsudoのパスワードを予め入力しておいてもらう
 sudo echo -e "\n\e[1;96mstm32fx_template ライブラリインストーラー\e[m\n"
 
+source ~/.profile
+
 if ! which arm-none-eabi-gcc 1> /dev/null; then
   echo "stm32plusをインストールするにはarm-none-eabi-gccが必要です"
   exit 1

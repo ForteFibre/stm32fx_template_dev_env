@@ -1,0 +1,19 @@
+diff --git a/lib/include/stl/string b/lib/include/stl/string
+index f9288463..4155eeb1 100644
+--- a/lib/include/stl/string
++++ b/lib/include/stl/string
+@@ -239,12 +239,12 @@ protected:
+ // Helper functions for exception handling.
+ template <class _Tp, class _Alloc> 
+ void _String_base<_Tp,_Alloc>::_M_throw_length_error() const {
+-  __STL_THROW(length_error("basic_string"));
++  //__STL_THROW(length_error("basic_string"));
+ }
+ 
+ template <class _Tp, class _Alloc> 
+ void _String_base<_Tp, _Alloc>::_M_throw_out_of_range() const {
+-  __STL_THROW(out_of_range("basic_string"));
++  //__STL_THROW(out_of_range("basic_string"));
+ }
+ 
+ 

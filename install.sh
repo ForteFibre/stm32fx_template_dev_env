@@ -17,6 +17,11 @@ if [ -e /tmp/stm32fx_template_dev_env ]; then
     rm -rf /tmp/stm32fx_template_dev_env
 fi
 
+echo -e "\e[1;32m> Git\e[m"
+echo -e "\e[90m[1/1]\e[m インストール中..."
+sudo -E apt-get -y install git -qq
+echo
+
 echo "インストーラーをダウンロードしています"
 git clone https://github.com/ForteFibre/stm32fx_template_dev_env.git stm32fx_template_dev_env -q
 cd /tmp/stm32fx_template_dev_env

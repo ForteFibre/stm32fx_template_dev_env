@@ -31,11 +31,6 @@ echo -e "\e[90m[1/1]\e[m インストール中..."
 sudo -E apt-get -y install cmake -qq
 echo
 
-echo -e "\e[1;32m> Git\e[m"
-echo -e "\e[90m[1/1]\e[m インストール中..."
-sudo -E apt-get -y install git -qq
-echo
-
 cd /tmp
 
 echo -e "\e[1;32m> stlink\e[m"

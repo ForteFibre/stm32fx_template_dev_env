@@ -39,10 +39,16 @@ echo
 cd /tmp
 
 echo -e "\e[1;32m> stlink\e[m"
-echo -e "\e[90m[1/2]\e[m debパッケージ取得中..."
-wget "https://github.com/stlink-org/stlink/releases/download/v1.6.1/stlink-1.6.1-1_amd64.deb" -O "stlink-1.6.1-1_amd64.deb" -q --show-progress
-echo -e "\e[90m[2/2]\e[m インストール中..."
-sudo -E apt-get -y install ./stlink-1.6.1-1_amd64.deb -qq
+if grep -q microsoft /proc/version; then
+    echo -e "\e[1;32m>> Running on WSL\e[m"
+    bash "$SCRIPT_DIR"/install_for_wsl.sh
+else
+    echo -e "\e[1;32m>> Running on native Linux\e[m"
+    echo -e "\e[90m[1/2]\e[m debパッケージ取得中..."
+    wget "https://github.com/stlink-org/stlink/releases/download/v1.6.1/stlink-1.6.1-1_amd64.deb" -O "stlink-1.6.1-1_amd64.deb" -q --show-progress
+    echo -e "\e[90m[2/2]\e[m インストール中..."
+    sudo -E apt-get -y install ./stlink-1.6.1-1_amd64.deb -qq
+fi
 echo
 
 echo -e "\e[1;32m> GNU Arm Embedded Toolchain\e[m"
